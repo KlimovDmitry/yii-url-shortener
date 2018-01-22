@@ -72,11 +72,6 @@ class ShortUrlController extends \yii\web\Controller
         yii::$app->response->redirect($model->url_original);
     }
     
-    public function actionLinkStatistics()
-    {
-        return $this->render('link-statistics');
-    }
-    
     /**
      * Lists all ShortUrl models.
      * @return mixed
