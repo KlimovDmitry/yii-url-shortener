@@ -3,7 +3,7 @@
 ### 1. Clone the source code
 
 ```shell
-git clone git@github.com:KlimovDmitry/yii-url-shortener.git
+git clone https://github.com/KlimovDmitry/yii-url-shortener.git
 ```
 
 ### 2. Install the extended package dependency.
