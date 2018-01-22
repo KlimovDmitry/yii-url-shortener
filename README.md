@@ -14,12 +14,12 @@ Install the `yii2-app-basic` repositories:
 composer install
 ```
 
-### 4. Running Migrations.
+### 3. Running Migrations.
 
 ```shell
 yii migrate
 ```
-### 5. Аdmin credentials.
+### 4. Аdmin credentials.
 
 ```shell
 login:    admin
