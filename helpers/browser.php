@@ -1,6 +1,6 @@
 <?php
 
-namespace browser;
+namespace helpers;
 
 /**
  * File: Browser.php

@@ -110,7 +110,7 @@ class ShortUrlController extends \yii\web\Controller
     {
         $model = new ShortUrlStatistics;
         
-        $browser = new \browser\Browser;
+        $browser = new \helpers\Browser;
         $user_agent = $browser->getBrowser() . ' ' . $browser->getVersion() . ', ' . $browser->getPlatform();
         
         $model->url_short = $url_short;
