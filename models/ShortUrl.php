@@ -67,9 +67,9 @@ class ShortUrl extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function findIdentity($url_short)
+    public static function findIdentity($id)
     {
-        return static::findOne(['url_short' => $url_short,]);
+        return static::findOne(['id' => $id,]);
     }
     
     /**
