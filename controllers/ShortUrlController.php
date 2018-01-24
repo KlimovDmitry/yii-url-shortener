@@ -59,7 +59,8 @@ class ShortUrlController extends \yii\web\Controller
     public function actionGo()
     {
         $request = yii::$app->request;
-        $id = $request->get('id');
+        $url_short = $request->get('url_short');
+        $id = \helpers\Base62::base62ToDec($url_short);
         
         $model = ShortUrl::findIdentity($id);
         if(is_null($model))
@@ -67,7 +68,7 @@ class ShortUrlController extends \yii\web\Controller
             throw new HttpException(404, 'The requested Item could not be found.'); 
         }
         
-        $this->logFollowing($id);
+        $this->logFollowing($url_short);
         
         yii::$app->response->redirect($model->url_original);
     }
