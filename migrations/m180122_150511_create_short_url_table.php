@@ -14,7 +14,7 @@ class m180122_150511_create_short_url_table extends Migration
     {
         $this->createTable('short_url', [
             'id' => $this->primaryKey(),
-            'url_short' => $this->string(8)->notNull()->unique(),
+            'url_short' => $this->string(8)->unique()->default(NULL),
             'url_original' => $this->text()->notNull(),
             'user_id' => $this->integer()->notNull(),
             'created_at' => $this->dateTime(),
