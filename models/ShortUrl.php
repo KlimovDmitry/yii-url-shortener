@@ -10,6 +10,7 @@ use yii\behaviors\TimestampBehavior;
 /**
  * This is the model class for table "short_url".
  *
+ * @property int $id
  * @property string $url_short
  * @property string $url_original
  * @property int $user_id
@@ -17,6 +18,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string $expire_at
  *
  * @property User $user
+ * @property ShortUrlStatistics[] $shortUrlStatistics
  */
 class ShortUrl extends \yii\db\ActiveRecord
 {
@@ -37,7 +39,7 @@ class ShortUrl extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['url_short', 'url_original', 'user_id'], 'required'],
+            [['url_original', 'user_id'], 'required'],
             [['url_original'], 'url', 'defaultScheme' => 'http', 'validSchemes' => ['http', 'https',]],
             [['user_id'], 'integer'],
             [['created_at', 'expire_at'], 'safe'],
@@ -53,11 +55,12 @@ class ShortUrl extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
+            'id' => 'ID',
             'url_short' => 'Url Short',
             'url_original' => 'Url Original',
             'user_id' => 'User ID',
-            'created_at' => 'Date Created',
-            'expire_at' => 'Date Expire',
+            'created_at' => 'Created At',
+            'expire_at' => 'Expire At',
         ];
     }
     
@@ -74,7 +77,7 @@ class ShortUrl extends \yii\db\ActiveRecord
      */
     public function getId()
     {
-        return $this->url_short;
+        return $this->getPrimaryKey();
     }
     
     /**
@@ -98,6 +101,14 @@ class ShortUrl extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getShortUrlStatistics()
+    {
+        return $this->hasMany(ShortUrlStatistics::className(), ['url_short' => 'url_short']);
     }
     
     /**
@@ -133,23 +144,10 @@ class ShortUrl extends \yii\db\ActiveRecord
         $model->url_original = $url_original;
         $model->created_at = date('Y-m-d H:i:s');
         $model->expire_at = date('Y-m-d H:i:s', (time() + $ttl));
+        $model->save();
         
-        $i = 0;
-        do
-        {
-            $model->url_short = Yii::$app->getSecurity()->generateRandomString(self::URI_LENGTH);
-            
-            $model->save();
-            $errors = (array)$model->getErrors();
-            
-            ++ $i;
-            
-            if($i > 99)
-            {
-                throw new UserException('Something went wrong in the process of creating unique short URL');
-            }
-        }
-        while(isset($errors) && array_key_exists('url_short', $errors));
+        $model->url_short = \helpers\Base62::decToBase62($model->getId());
+        $model->save();
         
         return $model;
     }
