@@ -13,6 +13,7 @@ class m180122_150511_create_short_url_table extends Migration
     public function up()
     {
         $this->createTable('short_url', [
+            'id' => $this->primaryKey(),
             'url_short' => $this->string(8)->notNull()->unique(),
             'url_original' => $this->text()->notNull(),
             'user_id' => $this->integer()->notNull(),
