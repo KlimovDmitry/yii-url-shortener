@@ -48,7 +48,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                '/<controller:(su)>/<id:(.{8})>'  => '/short-url/go/',
+                '/<controller:(su)>/<url_short:(.{1,8})>'  => '/short-url/go/',
             ],
         ],
     ],
